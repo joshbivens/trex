@@ -3,7 +3,7 @@ A vertical shooter where you play as a starship shooting asteroids and destroyin
 
 ### Ship
 - Health (50hp to start/upgradable at Outposts)
-- Shield (25hp/upgradable at Outposts)
+- Shields (25hp/upgradable at Outposts)
 - Phasers (spammable/upgradable at Outposts)
   - Grade 1: Single fire (1hp per shot)
   - Grade 2: Single fire wide (2hp per shot)
