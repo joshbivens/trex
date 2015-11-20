@@ -23,7 +23,7 @@ function preload() {
 
 function create() {
   starfield = game.add.tileSprite(0, 0, 800, 800, "starfield");
-  player = game.add.sprite(400, 750, "ship");
+  player = game.add.sprite(400, 700, "ship");
 
   player.anchor.setTo(0.5, 0.5);
   game.physics.enable(player, Phaser.Physics.ARCADE);
@@ -50,8 +50,24 @@ function update() {
     player.body.acceleration.y = ACCELERATION;
   }
 
+  if (player.x > game.width - 50) {
+    player.x = game.width - 50;
+  }
+
+  if (player.x < 50) {
+    player.x = 50;
+  }
+
+  if (player.y > game.height - 50) {
+    player.y = game.height - 50;
+  }
+
+  if (player.y < 50) {
+    player.y = 50;
+  }
+
   bank = player.body.velocity.x / MAXSPEED * 0.35;
-  player.scale.x = 1 - Math.abs(bank) / 2;
+  player.scale.x = 1 - Math.abs(bank) / 5;
   player.angle = bank * 10;
 }
 
