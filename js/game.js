@@ -47,9 +47,9 @@ function update() {
   }
 
   if (cursors.up.isDown) {
-    player.body.acceleration.y = -ACCELERATION * 0.8;
+    player.body.acceleration.y = -ACCELERATION;
   } else if (cursors.down.isDown) {
-    player.body.acceleration.y = ACCELERATION * 0.8;
+    player.body.acceleration.y = ACCELERATION;
   }
 
 // Banking
