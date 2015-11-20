@@ -13,8 +13,8 @@ var game = new Phaser.Game(
 var player, starfield, cursors, bank;
 
 var ACCELERATION = 2000;
-var DRAG = 600;
-var MAXSPEED = 400;
+var DRAG = 400;
+var MAXSPEED = 800;
 
 function preload() {
   game.load.image("starfield", "assets/img/starfield.png");
@@ -29,6 +29,7 @@ function create() {
   game.physics.enable(player, Phaser.Physics.ARCADE);
   player.body.maxVelocity.setTo(MAXSPEED, MAXSPEED);
   player.body.drag.setTo(DRAG, DRAG);
+  player.body.collideWorldBounds=true;
 
   cursors = game.input.keyboard.createCursorKeys();
 }
@@ -38,6 +39,7 @@ function update() {
 
   player.body.acceleration.setTo(0, 0);
 
+// Cursors
   if (cursors.left.isDown) {
     player.body.acceleration.x = -ACCELERATION;
   } else if (cursors.right.isDown) {
@@ -50,22 +52,21 @@ function update() {
     player.body.acceleration.y = ACCELERATION;
   }
 
-  if (player.x > game.width - 50) {
-    player.x = game.width - 50;
-  }
+// World bounds
+  // if (player.x > game.width - 50) {
+  //   player.x = game.width - 50;
+  // }
+  // if (player.x < 50) {
+  //   player.x = 50;
+  // }
+  // if (player.y > game.height - 50) {
+  //   player.y = game.height - 50;
+  // }
+  // if (player.y < 50) {
+  //   player.y = 50;
+  // }
 
-  if (player.x < 50) {
-    player.x = 50;
-  }
-
-  if (player.y > game.height - 50) {
-    player.y = game.height - 50;
-  }
-
-  if (player.y < 50) {
-    player.y = 50;
-  }
-
+// Banking
   bank = player.body.velocity.x / MAXSPEED * 0.35;
   player.scale.x = 1 - Math.abs(bank) / 5;
   player.angle = bank * 10;
