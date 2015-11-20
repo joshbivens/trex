@@ -12,9 +12,9 @@ var game = new Phaser.Game(
 
 var player, starfield, cursors, bank;
 
-var ACCELERATION = 2000;
+var ACCELERATION = 1000;
 var DRAG = 400;
-var MAXSPEED = 800;
+var MAXSPEED = 400;
 
 function preload() {
   game.load.image("starfield", "assets/img/starfield.png");
@@ -29,7 +29,7 @@ function create() {
   game.physics.enable(player, Phaser.Physics.ARCADE);
   player.body.maxVelocity.setTo(MAXSPEED, MAXSPEED);
   player.body.drag.setTo(DRAG, DRAG);
-  player.body.collideWorldBounds=true;
+  player.body.collideWorldBounds = true;
 
   cursors = game.input.keyboard.createCursorKeys();
 }
@@ -47,24 +47,10 @@ function update() {
   }
 
   if (cursors.up.isDown) {
-    player.body.acceleration.y = -ACCELERATION;
+    player.body.acceleration.y = -ACCELERATION * 0.8;
   } else if (cursors.down.isDown) {
-    player.body.acceleration.y = ACCELERATION;
+    player.body.acceleration.y = ACCELERATION * 0.8;
   }
-
-// World bounds
-  // if (player.x > game.width - 50) {
-  //   player.x = game.width - 50;
-  // }
-  // if (player.x < 50) {
-  //   player.x = 50;
-  // }
-  // if (player.y > game.height - 50) {
-  //   player.y = game.height - 50;
-  // }
-  // if (player.y < 50) {
-  //   player.y = 50;
-  // }
 
 // Banking
   bank = player.body.velocity.x / MAXSPEED * 0.35;
