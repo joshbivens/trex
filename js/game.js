@@ -10,7 +10,7 @@ var game = new Phaser.Game(
   }
 );
 
-var player, starfield, cursors;
+var player, starfield, cursors, bank;
 
 var ACCELERATION = 2000;
 var DRAG = 600;
@@ -49,6 +49,10 @@ function update() {
   } else if (cursors.down.isDown) {
     player.body.acceleration.y = ACCELERATION;
   }
+
+  bank = player.body.velocity.x / MAXSPEED * 0.35;
+  player.scale.x = 1 - Math.abs(bank) / 2;
+  player.angle = bank * 10;
 }
 
 function render() {
