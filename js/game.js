@@ -1,5 +1,5 @@
 var game = new Phaser.Game(
-  750, 900,
+  800, 800,
   Phaser.AUTO,
   "game",
   {
@@ -22,8 +22,8 @@ function preload() {
 }
 
 function create() {
-  starfield = game.add.tileSprite(0, 0, 750, 900, "starfield");
-  player = game.add.sprite(375, 780, "ship");
+  starfield = game.add.tileSprite(0, 0, 800, 800, "starfield");
+  player = game.add.sprite(400, 750, "ship");
 
   player.anchor.setTo(0.5, 0.5);
   game.physics.enable(player, Phaser.Physics.ARCADE);
