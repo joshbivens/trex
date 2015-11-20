@@ -35,7 +35,7 @@ function create() {
 }
 
 function update() {
-  starfield.tilePosition.y += 0.5;
+  starfield.tilePosition.y += 2;
 
   player.body.acceleration.setTo(0, 0);
 
