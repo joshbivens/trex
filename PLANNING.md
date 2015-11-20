@@ -12,30 +12,32 @@ A vertical shooter where you play as a starship shooting asteroids and destroyin
   - Grade 5: Spread (2hp in a wide arc)
 - Torpedoes (3 to start/can pick more up by shooting Supply Nodes or visiting Outposts)
 - Torpedo Bay (3 to start/upgradable at Outposts)
-- Speed (60 to start/upgradable at Outposts)
+- Speed (400 MAXSPEED/1000 ACCELERATION to start/upgradable at Outposts)
+- Stabilizers (400 DRAG to start/upgradable at Outposts)
 
 ### Enemies (Level 1)
-- Asteroids (10xp/1hp)
-- Ships (various designs) (50xp/5hp)
+- Asteroids (10xp/1hp - Deals -2hp on collision)
+- Ships (various designs) (50xp/5hp - Deals -5hp on shot/collision)
 - Stations
-  - Missle (30xp/3hp)
-  - Laser (40xp/4hp)
+  - Missle (30xp/3hp - Deals -3hp on shot/collision)
+  - Laser (40xp/4hp - Deals -4hp on shot/collision)
 
 ### Outposts (Level 1)
 New Outpost at the end of each Sector. Prices for upgrades in XP.
 - Refill health (free and automatic)
 - Upgrades
-  - Health (500xp; increases by 25hp)
-  - Shields (500xp; increases by 15hp)
+  - Health (500xp/+25hp)
+  - Shields (500xp/+15hp)
   - Phasers (300xp)
-  - Torpedo Bay (300xp: capacity increase by 1)
-  - Torpedoes (50xp per unit)
-  - Speed (100xp; increase by 10)
+  - Torpedo Bay (300xp/+1)
+  - Torpedoes (50xp/unit)
+  - Speed (100xp/+100 ACCELERATION, +25 MAXSPEED)
+  - Stabilizers (100xp/+50 DRAG)
 
 ### Supply Nodes
-When shot releases either a torpedo or 50xp.
+When shot releases either a torpedo or 50xp (1hp).
 
 ---
 
 ### Screen Size
-750px x 1334px
+800px x 800px
