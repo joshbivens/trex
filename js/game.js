@@ -24,7 +24,7 @@ function create() {
 }
 
 function update() {
-
+  starfield.tilePosition.y += 0.5;
 }
 
 function render() {
