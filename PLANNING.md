@@ -45,4 +45,4 @@ When shot releases either a torpedo or 50xp (1hp).
 ---
 
 # Friday, Nov 20th
-- Add WASD
+- ~~Add WASD~~
