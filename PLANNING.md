@@ -41,3 +41,8 @@ When shot releases either a torpedo or 50xp (1hp).
 
 ### Screen Size
 800px x 800px
+
+---
+
+# Friday, Nov 20th
+- Add WASD
