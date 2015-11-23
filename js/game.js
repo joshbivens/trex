@@ -10,7 +10,7 @@ var game = new Phaser.Game(
   }
 );
 
-var player, starfield, cursors, bank, bullet, fireButton;
+var player, starfield, cursors, bank, bullet, fireButton, asteroids;
 
 var bulletTimer = 0;
 
@@ -20,14 +20,15 @@ var MAXSPEED = 400;
 
 function preload() {
   game.load.image("starfield", "assets/img/starfield.png");
-  game.load.image("ship", "assets/img/spaceship.png");
+  game.load.image("ship", "assets/img/EntD.png");
   game.load.image("bullet", "assets/img/plasma.png");
+  game.load.image("asteroid", "assets/img/asteroid.png");
 }
 
 function create() {
   starfield = game.add.tileSprite(0, 0, 800, 800, "starfield");
 
-  player = game.add.sprite(400, 700, "ship");
+  player = game.add.sprite(400, 600, "ship");
   player.anchor.setTo(0.5, 0.5);
   game.physics.enable(player, Phaser.Physics.ARCADE);
   player.body.maxVelocity.setTo(MAXSPEED, MAXSPEED);
@@ -39,9 +40,24 @@ function create() {
   bullets.physicsBodyType = Phaser.Physics.ARCADE;
   bullets.createMultiple(20, "bullet");
   bullets.setAll("anchor.x", 0.5);
-  bullets.setAll("anchor.y", 1);
+  bullets.setAll("anchor.y", 3);
   bullets.setAll("outOfBoundsKill", true);
   bullets.setAll("checkWorldBounds", true);
+
+  asteroids = game.add.group();
+  asteroids.enableBody = true;
+  asteroids.physicsBodyType = Phaser.Physics.ARCADE;
+  asteroids.createMultiple(3, "asteroid");
+  asteroids.setAll('anchor.x', 0.5);
+  asteroids.setAll('anchor.y', 0.5);
+  asteroids.setAll('scale.x', 0.5);
+  asteroids.setAll('scale.y', 0.5);
+  asteroids.setAll('angle', 180);
+  asteroids.setAll("outOfBoundsKill", true);
+  asteroids.setAll("checkWorldBounds", true);
+
+  launchAsteroids();
+
 
   W = game.input.keyboard.addKey(Phaser.Keyboard.W);
   A = game.input.keyboard.addKey(Phaser.Keyboard.A);
@@ -51,7 +67,7 @@ function create() {
 }
 
 function update() {
-  starfield.tilePosition.y += 2;
+  starfield.tilePosition.y += 1;
 
   player.body.acceleration.setTo(0, 0);
 
@@ -99,4 +115,23 @@ function fireBullet() {
       bulletTimer = game.time.now + BULLET_SPACING;
     }
   }
+}
+
+function launchAsteroids() {
+  var MIN_SPACING = 300;
+  var MAX_SPACING = 2000;
+  var SPEED = 100;
+  var enemy = asteroids.getFirstExists(false);
+
+  if (enemy) {
+    enemy.reset(game.rnd.integerInRange(0, game.width), 0);
+    enemy.body.velocity.y = SPEED;
+    enemy.body.drag.x = 100;
+
+    enemy.update = function () {
+      enemy.angle += 1;
+    }
+  }
+
+  game.time.events.add(game.rnd.integerInRange(MIN_SPACING, MAX_SPACING), launchAsteroids);
 }
