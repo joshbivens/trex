@@ -10,7 +10,7 @@ var game = new Phaser.Game(
   }
 );
 
-var player, starfield, cursors, bank, bullet, fireButton, asteroids, explosions;
+var player, starfield, cursors, bank, bullet, fireButton, asteroids;
 
 var bulletTimer = 0;
 
@@ -23,7 +23,6 @@ function preload() {
   game.load.image("ship", "assets/img/EntD.png");
   game.load.image("bullet", "assets/img/plasma.png");
   game.load.image("asteroid", "assets/img/asteroid.png");
-  game.load.image("asteroid", "assets/img/explosion.png");
 }
 
 function create() {
@@ -39,7 +38,7 @@ function create() {
   bullets = game.add.group();
   bullets.enableBody = true;
   bullets.physicsBodyType = Phaser.Physics.ARCADE;
-  bullets.createMultiple(1, "bullet");
+  bullets.createMultiple(20, "bullet");
   bullets.setAll("anchor.x", 0.5);
   bullets.setAll("anchor.y", 3);
   bullets.setAll("outOfBoundsKill", true);
