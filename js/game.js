@@ -107,6 +107,7 @@ function update() {
   player.angle = bank * 7;
 
   game.physics.arcade.overlap(player, asteroids, shipCollide, null, this);
+  game.physics.arcade.overlap(asteroids, bullets, hitEnemy, null, this);
 }
 
 function render() {
@@ -158,4 +159,14 @@ function shipCollide(player, enemy) {
   explosion.alpha = 0.7;
   explosion.play('explosion', 30, false, true);
   enemy.kill();
+}
+
+function hitEnemy(enemy, bullet) {
+  var explosion = explosions.getFirstExists(false);
+  explosion.reset(bullet.body.x + bullet.body.halfWidth, bullet.body.y + bullet.body.halfHeight);
+  explosion.body.velocity.y = enemy.body.velocity.y;
+  explosion.alpha = 0.7;
+  explosion.play('explosion', 30, false, true);
+  enemy.kill();
+  bullet.kill()
 }
