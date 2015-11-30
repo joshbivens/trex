@@ -10,7 +10,7 @@ var game = new Phaser.Game(
   }
 );
 
-var player, starfield, cursors, bank, bullet, fireButton, asteroids;
+var player, starfield, cursors, bank, bullet, fireButton, asteroids, explosions;
 
 var bulletTimer = 0;
 
@@ -23,6 +23,7 @@ function preload() {
   game.load.image("ship", "assets/img/EntD.png");
   game.load.image("bullet", "assets/img/plasma.png");
   game.load.image("asteroid", "assets/img/asteroid.png");
+  game.load.spritesheet("explosion", "assets/img/explode.png", 128, 128);
 }
 
 function create() {
@@ -55,9 +56,21 @@ function create() {
   asteroids.setAll('angle', 180);
   asteroids.setAll("outOfBoundsKill", true);
   asteroids.setAll("checkWorldBounds", true);
+  // asteroids.forEach(function(enemy) {
+  //   enemy.body.setSize(enemy.width * 3/4, enemy.height * 3/4);
+  // });
 
   launchAsteroids();
 
+  explosions = game.add.group();
+  explosions.enableBody = true;
+  explosions.physicsBodyType = Phaser.Physics.ARCADE;
+  explosions.createMultiple(30, 'explosion');
+  explosions.setAll('anchor.x', 0.5);
+  explosions.setAll('anchor.y', 0.5);
+  explosions.forEach(function(explosion) {
+      explosion.animations.add('explosion');
+  });
 
   W = game.input.keyboard.addKey(Phaser.Keyboard.W);
   A = game.input.keyboard.addKey(Phaser.Keyboard.A);
@@ -92,6 +105,8 @@ function update() {
   bank = player.body.velocity.x / MAXSPEED * 0.35;
   player.scale.x = 1 - Math.abs(bank) / 5;
   player.angle = bank * 7;
+
+  game.physics.arcade.overlap(player, asteroids, shipCollide, null, this);
 }
 
 function render() {
@@ -134,4 +149,13 @@ function launchAsteroids() {
   }
 
   game.time.events.add(game.rnd.integerInRange(MIN_SPACING, MAX_SPACING), launchAsteroids);
+}
+
+function shipCollide(player, enemy) {
+  var explosion = explosions.getFirstExists(false);
+  explosion.reset(enemy.body.x + enemy.body.halfWidth, enemy.body.y + enemy.body.halfHeight);
+  explosion.body.velocity.y = enemy.body.velocity.y;
+  explosion.alpha = 0.7;
+  explosion.play('explosion', 30, false, true);
+  enemy.kill();
 }
