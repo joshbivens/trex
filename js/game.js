@@ -56,9 +56,9 @@ function create() {
   asteroids.setAll('angle', 180);
   asteroids.setAll("outOfBoundsKill", true);
   asteroids.setAll("checkWorldBounds", true);
-  // asteroids.forEach(function(enemy) {
-  //   enemy.body.setSize(enemy.width * 3/4, enemy.height * 3/4);
-  // });
+  asteroids.forEach(function(enemy) {
+    enemy.body.setSize(enemy.width * 3/4, enemy.height * 3/4);
+  });
 
   launchAsteroids();
 
