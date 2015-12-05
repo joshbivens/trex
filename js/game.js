@@ -38,13 +38,10 @@ function create() {
   player.body.drag.setTo(DRAG, DRAG);
   player.body.collideWorldBounds = true;
 
-  shields = game.add.sprite(401, 585, 'shields');
+  shields = game.add.sprite(-64, -90, "shields");
+  player.addChild(shields);
   shields.health = 100;
-  shields.anchor.setTo(0.5, 0.5);
   game.physics.enable(shields, Phaser.Physics.ARCADE);
-  shields.body.maxVelocity.setTo(MAXSPEED, MAXSPEED);
-  shields.body.drag.setTo(DRAG, DRAG);
-  shields.body.collideWorldBounds = true;
 
   bullets = game.add.group();
   bullets.enableBody = true;
@@ -105,23 +102,18 @@ function update() {
   starfield.tilePosition.y += 1;
 
   player.body.acceleration.setTo(0, 0);
-  shields.body.acceleration.setTo(0, 0);
 
 // Cursors
   if (A.isDown) {
     player.body.acceleration.x = -ACCELERATION;
-    shields.body.acceleration.x = -ACCELERATION;
   } else if (D.isDown) {
     player.body.acceleration.x = ACCELERATION;
-    shields.body.acceleration.x = ACCELERATION;
   }
 
   if (W.isDown) {
     player.body.acceleration.y = -ACCELERATION;
-    shields.body.acceleration.y = -ACCELERATION;
   } else if (S.isDown) {
     player.body.acceleration.y = ACCELERATION;
-    shields.body.acceleration.y = ACCELERATION;
   }
 
   if (player.alive && fireButton.isDown) {
@@ -150,7 +142,7 @@ function fireBullet() {
     var bullet = bullets.getFirstExists(false);
 
     if (bullet) {
-      var bulletOffset = 20 * Math.sin(game.math.degToRad(player.angle));
+      var bulletOffset = 20 * Math.sin(game.math.degToRad(playera.angle));
       bullet.reset(player.x + bulletOffset, player.y);
       bullet.angle = player.angle;
       game.physics.arcade.velocityFromAngle(bullet.angle - 90, BULLET_SPEED, bullet.body.velocity);
@@ -197,7 +189,7 @@ function shipCollide(player, enemy) {
 
 }
 
-function shieldsCollide(player, enemy) {
+function shieldsCollide(shields, enemy) {
   var explosion = explosions.getFirstExists(false);
   explosion.reset(enemy.body.x + enemy.body.halfWidth, enemy.body.y + enemy.body.halfHeight);
     explosion.body.velocity.y = enemy.body.velocity.y;
