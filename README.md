@@ -16,7 +16,7 @@ A vertical shooter where you play as a starship shooting asteroids and destroyin
 - Stabilizers (400 DRAG to start/upgradable at Outposts)
 
 ### Enemies (Level 1)
-- Asteroids (10xp/1hp - Deals -2hp on collision)
+- Asteroids (10xp/1hp - Deals -2hp on collision with shields, -10hp on collision with hull)
 - Ships (various designs) (50xp/5hp - Deals -5hp on shot/collision)
 - Stations
   - Missle (30xp/3hp - Deals -3hp on shot/collision)
