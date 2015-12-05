@@ -2,8 +2,8 @@
 A vertical shooter where you play as a starship shooting asteroids and destroying enemy ships as you fly from Outpost to Outpost.
 
 ### Ship
-- Health (50hp to start/upgradable at Outposts)
-- Shields (25hp/upgradable at Outposts)
+- Health (100hp to start/upgradable at Outposts)
+- Shields (100hp/upgradable at Outposts)
 - Phasers (spammable/upgradable at Outposts)
   - Grade 1: Single fire (1hp per shot)
   - Grade 2: Single fire wide (2hp per shot)
@@ -24,7 +24,7 @@ A vertical shooter where you play as a starship shooting asteroids and destroyin
 
 ### Outposts (Level 1)
 New Outpost at the end of each Sector. Prices for upgrades in XP.
-- Refill health (free and automatic)
+- Refill health and shields (free and automatic)
 - Upgrades
   - Health (500xp/+25hp)
   - Shields (500xp/+15hp)
