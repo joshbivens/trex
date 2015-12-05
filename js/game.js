@@ -10,9 +10,10 @@ var game = new Phaser.Game(
   }
 );
 
-var player, starfield, cursors, bank, bullet, fireButton, asteroids, explosions, shields;
+var player, starfield, cursors, bank, bullet, fireButton, asteroids, explosions, shields, scoreText;
 
 var bulletTimer = 0;
+var score = 0;
 
 var ACCELERATION = 1000;
 var DRAG = 400;
@@ -80,15 +81,21 @@ function create() {
       explosion.animations.add('explosion');
   });
 
-  shieldsText = game.add.text(game.world.width - 154, 730, 'SHIELDS: ' + shields.health + '%', {font: '20px Arial', fill: '#FFF'});
+  shieldsText = game.add.text(game.world.width - 170, 730, 'SHIELDS: ' + shields.health + '%', {font: '20px Arial', fill: '#FFF'});
   shieldsText.render = function() {
     shieldsText.text = 'SHIELDS: ' + Math.max(shields.health, 0) + '%';
   };
 
-  healthText = game.add.text(game.world.width - 232, 760, 'HULL INTEGRITY: ' + player.health + '%', {font: '20px Arial', fill: '#FFF'});
+  healthText = game.add.text(game.world.width - 247, 760, 'HULL INTEGRITY: ' + player.health + '%', {font: '20px Arial', fill: '#FFF'});
   healthText.render = function() {
     healthText.text = 'HULL INTEGRITY: ' + Math.max(player.health, 0) + '%';
   };
+
+  scoreText = game.add.text(20, 760, 'XP: ' + score, {font: '20px Arial', fill: '#FFF'});
+  scoreText.render = function() {
+    scoreText.text = 'XP: ' + score;
+  };
+
 
 
   W = game.input.keyboard.addKey(Phaser.Keyboard.W);
@@ -214,5 +221,8 @@ function hitEnemy(enemy, bullet) {
   explosion.alpha = 0.7;
   explosion.play('explosion', 30, false, true);
   enemy.kill();
-  bullet.kill()
+  bullet.kill();
+
+  score += enemy.damageAmount * 5;
+  scoreText.render();
 }
