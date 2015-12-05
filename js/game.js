@@ -10,7 +10,7 @@ var game = new Phaser.Game(
   }
 );
 
-var player, starfield, cursors, bank, bullet, fireButton, asteroids, explosions;
+var player, starfield, cursors, bank, bullet, fireButton, asteroids, explosions, shields;
 
 var bulletTimer = 0;
 
@@ -23,6 +23,7 @@ function preload() {
   game.load.image("ship", "assets/img/EntD.png");
   game.load.image("bullet", "assets/img/plasma.png");
   game.load.image("asteroid", "assets/img/asteroid.png");
+  game.load.image("shields", "assets/img/shields.png");
   game.load.spritesheet("explosion", "assets/img/explode.png", 128, 128);
 }
 
@@ -30,11 +31,20 @@ function create() {
   starfield = game.add.tileSprite(0, 0, 800, 800, "starfield");
 
   player = game.add.sprite(400, 600, "ship");
+  player.health = 100;
   player.anchor.setTo(0.5, 0.5);
   game.physics.enable(player, Phaser.Physics.ARCADE);
   player.body.maxVelocity.setTo(MAXSPEED, MAXSPEED);
   player.body.drag.setTo(DRAG, DRAG);
   player.body.collideWorldBounds = true;
+
+  shields = game.add.sprite(401, 585, 'shields');
+  shields.health = 5;
+  shields.anchor.setTo(0.5, 0.5);
+  game.physics.enable(shields, Phaser.Physics.ARCADE);
+  shields.body.maxVelocity.setTo(MAXSPEED, MAXSPEED);
+  shields.body.drag.setTo(DRAG, DRAG);
+  shields.body.collideWorldBounds = true;
 
   bullets = game.add.group();
   bullets.enableBody = true;
@@ -58,6 +68,7 @@ function create() {
   asteroids.setAll("checkWorldBounds", true);
   asteroids.forEach(function(enemy) {
     enemy.body.setSize(enemy.width * 3/4, enemy.height * 3/4);
+    enemy.damageAmount = 2;
   });
 
   launchAsteroids();
@@ -72,6 +83,11 @@ function create() {
       explosion.animations.add('explosion');
   });
 
+  shieldsText = game.add.text(game.world.width - 140, 10, 'Shields: ' + player.health + '%', {font: '20px Arial', fill: '#FFF'});
+  shieldsText.render = function() {
+    shieldsText.text = 'Shields: ' + Math.max(shields.health, 0) + '%';
+  }
+
   W = game.input.keyboard.addKey(Phaser.Keyboard.W);
   A = game.input.keyboard.addKey(Phaser.Keyboard.A);
   S = game.input.keyboard.addKey(Phaser.Keyboard.S);
@@ -83,21 +99,26 @@ function update() {
   starfield.tilePosition.y += 1;
 
   player.body.acceleration.setTo(0, 0);
+  shields.body.acceleration.setTo(0, 0);
 
 // Cursors
   if (A.isDown) {
     player.body.acceleration.x = -ACCELERATION;
+    shields.body.acceleration.x = -ACCELERATION;
   } else if (D.isDown) {
     player.body.acceleration.x = ACCELERATION;
+    shields.body.acceleration.x = ACCELERATION;
   }
 
   if (W.isDown) {
     player.body.acceleration.y = -ACCELERATION;
+    shields.body.acceleration.y = -ACCELERATION;
   } else if (S.isDown) {
     player.body.acceleration.y = ACCELERATION;
+    shields.body.acceleration.y = ACCELERATION;
   }
 
-  if (fireButton.isDown) {
+  if (player.alive && fireButton.isDown) {
     fireBullet();
   }
 
@@ -106,6 +127,7 @@ function update() {
   player.scale.x = 1 - Math.abs(bank) / 5;
   player.angle = bank * 7;
 
+  game.physics.arcade.overlap(shields, asteroids, shipCollide, null, this);
   game.physics.arcade.overlap(player, asteroids, shipCollide, null, this);
   game.physics.arcade.overlap(asteroids, bullets, hitEnemy, null, this);
 }
@@ -155,10 +177,17 @@ function launchAsteroids() {
 function shipCollide(player, enemy) {
   var explosion = explosions.getFirstExists(false);
   explosion.reset(enemy.body.x + enemy.body.halfWidth, enemy.body.y + enemy.body.halfHeight);
-  explosion.body.velocity.y = enemy.body.velocity.y;
+    explosion.body.velocity.y = enemy.body.velocity.y;
   explosion.alpha = 0.7;
   explosion.play('explosion', 30, false, true);
   enemy.kill();
+
+  shields.damage(enemy.damageAmount);
+  shieldsText.render();
+
+  if(shields.health === 0) {
+    shields.kill();
+  }
 }
 
 function hitEnemy(enemy, bullet) {
