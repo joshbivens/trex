@@ -110,7 +110,7 @@ function create() {
 }
 
 function update() {
-  starfield.tilePosition.y += 1;
+  starfield.tilePosition.y += 3;
 
   player.body.acceleration.setTo(0, 0);
 
