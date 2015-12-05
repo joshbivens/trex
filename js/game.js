@@ -10,7 +10,7 @@ var game = new Phaser.Game(
   }
 );
 
-var player, starfield, cursors, bank, bullet, fireButton, asteroids, explosions, shields, scoreText;
+var player, starfield, cursors, bank, bullet, fireButton, asteroids, explosions, shields, scoreText, gameOver;
 
 var bulletTimer = 0;
 var score = 0;
@@ -32,7 +32,7 @@ function create() {
   starfield = game.add.tileSprite(0, 0, 800, 800, "starfield");
 
   player = game.add.sprite(400, 600, "ship");
-  player.health = 100;
+  player.health = 2;
   player.anchor.setTo(0.5, 0.5);
   game.physics.enable(player, Phaser.Physics.ARCADE);
   player.body.maxVelocity.setTo(MAXSPEED, MAXSPEED);
@@ -41,7 +41,7 @@ function create() {
 
   shields = game.add.sprite(-64, -90, "shields");
   player.addChild(shields);
-  shields.health = 100;
+  shields.health = 2;
   game.physics.enable(shields, Phaser.Physics.ARCADE);
 
   bullets = game.add.group();
@@ -96,6 +96,9 @@ function create() {
     scoreText.text = 'XP: ' + score;
   };
 
+  gameOver = game.add.text(game.world.centerX, game.world.centerY, "GAME OVER", {font: '60px Arial', fill: '#FFF'});
+  gameOver.anchor.setTo(0.5, 0.5);
+  gameOver.visible = false;
 
 
   W = game.input.keyboard.addKey(Phaser.Keyboard.W);
@@ -135,6 +138,23 @@ function update() {
   game.physics.arcade.overlap(shields, asteroids, shieldsCollide, null, this);
   game.physics.arcade.overlap(player, asteroids, shipCollide, null, this);
   game.physics.arcade.overlap(asteroids, bullets, hitEnemy, null, this);
+
+  if(!player.alive && gameOver.visible === false) {
+    gameOver.visible = true;
+
+    var fadeIn = game.add.tween(gameOver);
+    fadeIn.to({alpha: 1}, 2000, Phaser.Easing.Quintic.Out);
+    fadeIn.onComplete.add(setResetHandlers);
+    fadeIn.start();
+
+    function setResetHandlers() {
+      spaceRestart = fireButton.onDown.addOnce(_restart, this);
+      function _restart() {
+        spaceRestart.detach();
+        restart();
+      }
+    }
+  }
 }
 
 function render() {
@@ -225,4 +245,22 @@ function hitEnemy(enemy, bullet) {
 
   score += enemy.damageAmount * 5;
   scoreText.render();
+}
+
+function restart() {
+  asteroids.callAll('kill');
+
+  player.revive();
+  shields.revive();
+  player.health = 100;
+  shields.health = 100;
+  score = 0;
+  shieldsText.render();
+  healthText.render();
+  scoreText.render();
+
+  player.x = 400;
+  player.y = 600;
+
+  gameOver.visible = false;
 }
