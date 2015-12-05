@@ -97,6 +97,7 @@ function create() {
   };
 
   gameOver = game.add.text(game.world.centerX, game.world.centerY, "GAME OVER", {font: '60px Arial', fill: '#FFF'});
+  gameOver.alpha = 0;
   gameOver.anchor.setTo(0.5, 0.5);
   gameOver.visible = false;
 
@@ -143,7 +144,7 @@ function update() {
     gameOver.visible = true;
 
     var fadeIn = game.add.tween(gameOver);
-    fadeIn.to({alpha: 1}, 2000, Phaser.Easing.Quintic.Out);
+    fadeIn.to({alpha: 1}, 8000, Phaser.Easing.Quintic.Out);
     fadeIn.onComplete.add(setResetHandlers);
     fadeIn.start();
 
