@@ -142,7 +142,7 @@ function fireBullet() {
     var bullet = bullets.getFirstExists(false);
 
     if (bullet) {
-      var bulletOffset = 20 * Math.sin(game.math.degToRad(playera.angle));
+      var bulletOffset = 20 * Math.sin(game.math.degToRad(player.angle));
       bullet.reset(player.x + bulletOffset, player.y);
       bullet.angle = player.angle;
       game.physics.arcade.velocityFromAngle(bullet.angle - 90, BULLET_SPEED, bullet.body.velocity);
