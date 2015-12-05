@@ -32,7 +32,7 @@ function create() {
   starfield = game.add.tileSprite(0, 0, 800, 800, "starfield");
 
   player = game.add.sprite(400, 600, "ship");
-  player.health = 2;
+  player.health = 20;
   player.anchor.setTo(0.5, 0.5);
   game.physics.enable(player, Phaser.Physics.ARCADE);
   player.body.maxVelocity.setTo(MAXSPEED, MAXSPEED);
@@ -41,7 +41,7 @@ function create() {
 
   shields = game.add.sprite(-64, -90, "shields");
   player.addChild(shields);
-  shields.health = 2;
+  shields.health = 10;
   game.physics.enable(shields, Phaser.Physics.ARCADE);
 
   bullets = game.add.group();
@@ -144,7 +144,7 @@ function update() {
     gameOver.visible = true;
 
     var fadeIn = game.add.tween(gameOver);
-    fadeIn.to({alpha: 1}, 8000, Phaser.Easing.Quintic.Out);
+    fadeIn.to({alpha: 1}, 1000, Phaser.Easing.Quintic.Out);
     fadeIn.onComplete.add(setResetHandlers);
     fadeIn.start();
 
@@ -208,8 +208,11 @@ function shipCollide(player, enemy) {
   explosion.play('explosion', 30, false, true);
   enemy.kill();
 
-  player.damage(enemy.damageAmount);
-  healthText.render();
+  if(shields.health <= 0) {
+    enemy.damageAmount = 10;
+    player.damage(enemy.damageAmount);
+    healthText.render();
+}
 
   if(player.health === 0) {
     player.kill();
@@ -250,9 +253,12 @@ function hitEnemy(enemy, bullet) {
 
 function restart() {
   asteroids.callAll('kill');
-
+  asteroids.forEach(function(enemy) {
+    enemy.damageAmount = 2;
+  });
   player.revive();
   shields.revive();
+  shields.alpha = 1;
   player.health = 100;
   shields.health = 100;
   score = 0;
