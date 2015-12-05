@@ -39,7 +39,7 @@ function create() {
   player.body.collideWorldBounds = true;
 
   shields = game.add.sprite(401, 585, 'shields');
-  shields.health = 5;
+  shields.health = 100;
   shields.anchor.setTo(0.5, 0.5);
   game.physics.enable(shields, Phaser.Physics.ARCADE);
   shields.body.maxVelocity.setTo(MAXSPEED, MAXSPEED);
@@ -83,10 +83,16 @@ function create() {
       explosion.animations.add('explosion');
   });
 
-  shieldsText = game.add.text(game.world.width - 140, 10, 'Shields: ' + player.health + '%', {font: '20px Arial', fill: '#FFF'});
+  shieldsText = game.add.text(game.world.width - 330, 10, 'Shields: ' + shields.health + '%', {font: '20px Arial', fill: '#FFF'});
   shieldsText.render = function() {
     shieldsText.text = 'Shields: ' + Math.max(shields.health, 0) + '%';
-  }
+  };
+
+  healthText = game.add.text(game.world.width - 190, 10, 'Hull Integrity: ' + player.health + '%', {font: '20px Arial', fill: '#FFF'});
+  healthText.render = function() {
+    healthText.text = 'Hull Integrity: ' + Math.max(player.health, 0) + '%';
+  };
+
 
   W = game.input.keyboard.addKey(Phaser.Keyboard.W);
   A = game.input.keyboard.addKey(Phaser.Keyboard.A);
@@ -127,7 +133,7 @@ function update() {
   player.scale.x = 1 - Math.abs(bank) / 5;
   player.angle = bank * 7;
 
-  game.physics.arcade.overlap(shields, asteroids, shipCollide, null, this);
+  game.physics.arcade.overlap(shields, asteroids, shieldsCollide, null, this);
   game.physics.arcade.overlap(player, asteroids, shipCollide, null, this);
   game.physics.arcade.overlap(asteroids, bullets, hitEnemy, null, this);
 }
@@ -182,12 +188,31 @@ function shipCollide(player, enemy) {
   explosion.play('explosion', 30, false, true);
   enemy.kill();
 
+  player.damage(enemy.damageAmount);
+  healthText.render();
+
+  if(player.health === 0) {
+    player.kill();
+  }
+
+}
+
+function shieldsCollide(player, enemy) {
+  var explosion = explosions.getFirstExists(false);
+  explosion.reset(enemy.body.x + enemy.body.halfWidth, enemy.body.y + enemy.body.halfHeight);
+    explosion.body.velocity.y = enemy.body.velocity.y;
+  explosion.alpha = 0.7;
+  explosion.play('explosion', 30, false, true);
+  enemy.kill();
+
   shields.damage(enemy.damageAmount);
+  shields.alpha -= 0.015;
   shieldsText.render();
 
   if(shields.health === 0) {
     shields.kill();
   }
+
 }
 
 function hitEnemy(enemy, bullet) {
