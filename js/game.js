@@ -48,7 +48,7 @@ function create() {
   bullets.physicsBodyType = Phaser.Physics.ARCADE;
   bullets.createMultiple(20, "bullet");
   bullets.setAll("anchor.x", 0.5);
-  bullets.setAll("anchor.y", 3);
+  bullets.setAll("anchor.y", 2);
   bullets.setAll("outOfBoundsKill", true);
   bullets.setAll("checkWorldBounds", true);
 
@@ -80,14 +80,14 @@ function create() {
       explosion.animations.add('explosion');
   });
 
-  shieldsText = game.add.text(game.world.width - 330, 10, 'Shields: ' + shields.health + '%', {font: '20px Arial', fill: '#FFF'});
+  shieldsText = game.add.text(game.world.width - 154, 730, 'SHIELDS: ' + shields.health + '%', {font: '20px Arial', fill: '#FFF'});
   shieldsText.render = function() {
-    shieldsText.text = 'Shields: ' + Math.max(shields.health, 0) + '%';
+    shieldsText.text = 'SHIELDS: ' + Math.max(shields.health, 0) + '%';
   };
 
-  healthText = game.add.text(game.world.width - 190, 10, 'Hull Integrity: ' + player.health + '%', {font: '20px Arial', fill: '#FFF'});
+  healthText = game.add.text(game.world.width - 232, 760, 'HULL INTEGRITY: ' + player.health + '%', {font: '20px Arial', fill: '#FFF'});
   healthText.render = function() {
-    healthText.text = 'Hull Integrity: ' + Math.max(player.health, 0) + '%';
+    healthText.text = 'HULL INTEGRITY: ' + Math.max(player.health, 0) + '%';
   };
 
 
