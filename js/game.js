@@ -144,8 +144,8 @@ function update() {
     gameOver.visible = true;
 
     var fadeIn = game.add.tween(gameOver);
-    fadeIn.to({alpha: 1}, 1000, Phaser.Easing.Quintic.Out);
-    fadeIn.onComplete.add(setResetHandlers);
+    fadeIn.to({alpha: 1}, 5000, Phaser.Easing.Quintic.Out);
+    setResetHandlers();
     fadeIn.start();
 
     function setResetHandlers() {
