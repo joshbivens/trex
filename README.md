@@ -1,6 +1,8 @@
 # Trex
 A vertical shooter where you play as a starship shooting asteroids and destroying enemy ships as you fly from Outpost to Outpost.
 
+[Demo](http://joshbivens.github.io/trex/)
+
 ### Ship
 - Health (100hp to start/upgradable at Outposts)
 - Shields (100hp/upgradable at Outposts)
